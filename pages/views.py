@@ -9,4 +9,10 @@ def home_view(request, *args, **kwargs):
     return render(request, "home.html", {})
 def contact_view(request, *args, **kwargs):
     # return HttpResponse("<h1>Contact View!</h1>") # string of HTML code
-    return render(request, "contact.html", {})
+    my_context = {
+        "my_text": "This is some text",
+        "my_number": 7849182,
+        "my_list": [123, 456, "Yo!"]
+    }
+
+    return render(request, "contact.html", my_context)
