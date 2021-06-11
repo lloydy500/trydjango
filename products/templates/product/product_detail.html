@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ object.title }} </h1>
+<h2> This is rendering from inside proucts/templates/</h2>
+<h2>you could override this by making a templates/products folder inside src folder</h2>
+
+<p>
+{% if object.description != None and object.description != '' %}
+    {{ object.description }}
+    {{ object.price }}
+{% else %}
+    Description coming soon!
+{% endif %}
+</p>
+{% endblock %}

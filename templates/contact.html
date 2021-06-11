@@ -8,16 +8,20 @@
     <!-- <p>{{ request.user }}</p> -->
     <!-- <p>{{ request.user.is_authenticated }}</p> -->
 
-    <p>{{ my_text }}</p>
-    <p>{{ my_number }}</p>
-
     <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
+        <li>{{ title|title }}</li>
+        <li>{{my_html|safe}}</li>
+        <li>{{slugged_and_stripped|striptags|slugify}}</li>
     </ul>
     <ul>
     {% for my_sub_item in my_list %}
-        <li>{{ forloop.counter }} - {{ my_sub_item }}</li>
+        {% if my_sub_item == 456 %}
+            <li>{{ forloop.counter }} - {{ my_sub_item|add:93123118 }}</li>
+        {% elif my_sub_item == "Yo!" %}
+            <li>{{ forloop.counter }} - "I'm still saying hello!"</li>
+        {% else %}
+            <li>{{ forloop.counter }} - {{ my_sub_item }}</li>
+        {% endif %}
     {% endfor %}
     </ul>
 {% endblock %}

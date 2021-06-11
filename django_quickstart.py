@@ -9,7 +9,7 @@ create venv in python3
     virtualenv .
     pip install django==2.1.5(or specify other version)
 start venv
-source bin/activate
+    source bin/activate
 check
     pip freeze
 create src folder within venv
@@ -38,6 +38,10 @@ When you add a model add the name to settings.py "INSTALLED_APPS".
 E.g 'pages', 'products'
     Model.objects.all()
     Model.objects.create(name="test", description="test2")
+Assign instance of a model to variable e.g.
+    product = Product.objects.get(id=1)
+Get the python/django functions that can be called on it
+    dir(product)
 -------------------
 VIEWS
 -------------------
@@ -55,13 +59,53 @@ then pass the context as a parameter in the return statement for that view
 we can access that data from within the templates using loops, counters etc.
 e.g. inside templates/"contacts.html"
 -------------------
+{% extends "base.html" %}
     {% for sub_data in my_data %}
         {% sub_data %}
     {% endfor %}
 -------------------
+FORMS
+-------------------
+create forms.py inside the model folder e.g. proucts/forms.py
+-------------------
+from django import forms
+from .models import Product
+
+    class ProductForm(forms.ModelForm):
+        class Meta:
+            model = Product
+            fields = [
+                'title',
+                'description',
+                'price'
+            ]
+
+then make a template in products/templates/products e.g. product_create.html
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <form method="POST"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="save">
+    </form>
+    {% endblock %}
+
+then add function to views:
+
+    def product_create_view(request):
+        form = ProductForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+
+        context = {
+            'form': form
+        }
+        return render(request, "product/product_create.html", context)
+
+remember we need to python manage.py makemigrations then python manage.py migrate
+whenever we change the model
 -------------------
 
--------------------
 -------------------
 
 -------------------
